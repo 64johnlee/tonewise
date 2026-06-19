@@ -1,6 +1,6 @@
 import { DynamoDBClient, CreateTableCommand } from "@aws-sdk/client-dynamodb";
 const client = new DynamoDBClient({ region: process.env.AWS_REGION || "us-east-1" });
-const TableName = process.env.DYNAMODB_TABLE || "tonetutor";
+const TableName = process.env.DYNAMODB_TABLE || "tonewise";
 try {
   await client.send(new CreateTableCommand({
     TableName,

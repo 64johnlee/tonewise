@@ -78,7 +78,7 @@ export default function Home() {
 
   return (
     <main className="wrap">
-      <header className="nav"><span className="logo">🎙 ToneTutor</span><span className="badge">DynamoDB · Vercel</span></header>
+      <header className="nav"><span className="logo">🎙 ToneWise</span><span className="badge">DynamoDB · Vercel</span></header>
 
       {screen === "setup" && (
         <section className="card">

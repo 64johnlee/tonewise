@@ -1,4 +1,4 @@
-# ToneTutor (H0 edition) — Vercel + AWS DynamoDB
+# ToneWise (H0 edition) — Vercel + AWS DynamoDB
 
 AI Mandarin conversation tutor with real-time tone grading. Built for the **H0: Hack the Zero Stack** hackathon on **Vercel** + **Amazon DynamoDB**.
 
@@ -14,7 +14,7 @@ Push to GitHub → import in Vercel → add the same env vars in Project Setting
 ## Architecture
 Next.js on **Vercel** → API route handlers → **Amazon DynamoDB** (single-table) + Gemini 2.5 Flash (tone grading).
 
-## DynamoDB single-table design (table: `tonetutor`)
+## DynamoDB single-table design (table: `tonewise`)
 | Entity | PK | SK | Notes |
 |---|---|---|---|
 | User profile | `USER#<uid>` | `PROFILE` | plan, free_used, streak (monetization) |

@@ -1,6 +1,6 @@
 import "./globals.css";
 export const metadata = {
-  title: "ToneTutor — AI Mandarin Practice",
+  title: "ToneWise — AI Mandarin Practice",
   description: "Practice Mandarin conversations with real-time tone grading. Powered by AWS DynamoDB + Vercel.",
 };
 export default function RootLayout({ children }) {
