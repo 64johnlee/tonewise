@@ -51,3 +51,7 @@ h2{font-size:1.1rem;margin:.2rem 0}
 .tone.neu{opacity:.65}
 .vscore{font-size:.82rem;margin-top:.3rem}
 .hint{font-size:.74rem;color:var(--sub);margin-top:.45rem;line-height:1.45}
+.navr{display:flex;align-items:center;gap:.5rem}
+.iconbtn{background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:.25rem .5rem;font-size:.95rem;cursor:pointer;line-height:1}
+.replay{background:none;border:none;cursor:pointer;font-size:.8rem;margin-left:.4rem;padding:0;opacity:.7;vertical-align:middle}
+.replay:hover{opacity:1}

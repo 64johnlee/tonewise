@@ -3,6 +3,7 @@ import { useState, useRef, useEffect, useSyncExternalStore } from "react";
 import { TOPICS } from "../lib/constants";
 import { createRecorder, isVoiceSupported } from "../lib/voice.js";
 import { analyzeUtterance } from "../lib/tone-analysis.js";
+import { speak, cancelSpeech, primeVoices } from "../lib/speech.js";
 
 const LEVELS = ["HSK1", "HSK2", "HSK3", "HSK4", "HSK5", "HSK6"];
 
@@ -76,9 +77,11 @@ export default function Home() {
   const [recording, setRecording] = useState(false);
   const [liveText, setLiveText] = useState("");
   const [livePitch, setLivePitch] = useState([]);
+  const [speakOn, setSpeakOn] = useState(true);
   const endRef = useRef(null);
   const recRef = useRef(null);
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
+  useEffect(() => { primeVoices(); return () => cancelSpeech(); }, []);
 
   async function start() {
     setLoading(true);
@@ -90,6 +93,7 @@ export default function Home() {
       setSession({ id: d.sessionId, openingZh: d.reply_zh });
       setMessages([{ who: "lin", zh: d.reply_zh, py: d.reply_pinyin, en: d.reply_en }]);
       setScreen("chat");
+      if (speakOn) speak(d.reply_zh);
     } catch (e) { alert("Could not start: " + e.message); }
     setLoading(false);
   }
@@ -102,6 +106,7 @@ export default function Home() {
       const d = await r.json();
       if (!r.ok) throw new Error(d.error || "failed");
       setMessages((m) => [...m, { who: "lin", zh: d.reply_zh, py: d.reply_pinyin, en: d.reply_en, grade: d.grade }]);
+      if (speakOn) speak(d.reply_zh);
     } catch (e) { alert("Error: " + e.message); }
     setLoading(false);
   }
@@ -115,6 +120,7 @@ export default function Home() {
 
   async function startRec() {
     if (recording || loading || !session) return;
+    cancelSpeech(); // don't let Lin Wei's voice bleed into the mic
     const rec = createRecorder();
     rec.onUpdate = ({ contour, transcript }) => {
       if (contour) setLivePitch([...contour]);
@@ -158,7 +164,13 @@ export default function Home() {
 
   return (
     <main className="wrap">
-      <header className="nav"><span className="logo">🎙 ToneWise</span><span className="badge">DynamoDB · Vercel</span></header>
+      <header className="nav">
+        <span className="logo">🎙 ToneWise</span>
+        <span className="navr">
+          <button className="iconbtn" onClick={() => setSpeakOn((s) => { if (s) cancelSpeech(); return !s; })} title={speakOn ? "Mute Lin Wei" : "Unmute Lin Wei"}>{speakOn ? "🔊" : "🔇"}</button>
+          <span className="badge">DynamoDB · Vercel</span>
+        </span>
+      </header>
 
       {screen === "setup" && (
         <section className="card">
@@ -177,7 +189,7 @@ export default function Home() {
           <div className="msgs">
             {messages.map((m, i) => (
               <div key={i} className={"msg " + m.who}>
-                <div className="zh">{m.zh}</div>
+                <div className="zh">{m.zh}{m.who === "lin" && <button className="replay" onClick={() => speak(m.zh)} title="Hear it again">🔊</button>}</div>
                 {m.py && <div className="py">{m.py}</div>}
                 {m.en && <div className="en">{m.en}</div>}
                 {m.voice && (
