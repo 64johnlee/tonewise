@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { getSummary } from "../../../lib/gemini.js";
 import { getTurns } from "../../../lib/dynamo.js";
 
+export const runtime = "nodejs";
+
 export async function POST(req) {
   try {
     const { sessionId } = await req.json();
