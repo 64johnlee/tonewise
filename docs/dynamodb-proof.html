@@ -1,0 +1,60 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+:root{--bg:#0c0a09;--panel:#16120f;--line:#332b27;--text:#f4ece6;--dim:#a89a90;
+--gold:#e8b65a;--jade:#4fcf9a;--blue:#6aa6ff;--mono:"Cascadia Code",Consolas,monospace;
+--sans:"Inter","Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1600px;background:var(--bg);color:var(--text);font-family:var(--sans);padding:48px 56px;-webkit-font-smoothing:antialiased}
+.top{display:flex;align-items:center;gap:16px;margin-bottom:6px}
+.badge{font-family:var(--mono);font-size:14px;background:rgba(232,182,90,.14);border:1px solid rgba(232,182,90,.45);color:var(--gold);border-radius:8px;padding:5px 11px}
+h1{font-size:34px;font-weight:800}
+.sub{color:var(--dim);font-size:18px;margin:4px 0 26px}
+.meta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:26px}
+.chip{font-family:var(--mono);font-size:14px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+.chip b{color:var(--jade)}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{border:1px solid var(--line);padding:11px 14px;text-align:left;vertical-align:top}
+th{background:rgba(232,182,90,.1);color:var(--gold);font-size:13px;letter-spacing:.04em;text-transform:uppercase}
+td.k{font-family:var(--mono);color:var(--blue)} td.sk{font-family:var(--mono);color:var(--gold)}
+td.x{font-family:var(--mono);color:var(--dim);font-size:13px} td.ent{font-weight:600}
+.foot{margin-top:22px;color:var(--dim);font-size:14px;font-family:var(--mono)}
+</style></head><body>
+  <div class="top"><span class="badge">AWS · Amazon DynamoDB</span><h1>Table <span style="font-family:var(--mono)">tonewise</span> — live</h1></div>
+  <div class="sub">Single-table design backing ToneWise · region ap-southeast-1</div>
+  <div class="meta">
+    <div class="chip">Status: <b>ACTIVE</b></div>
+    <div class="chip">Billing: <b>PAY_PER_REQUEST</b></div>
+    <div class="chip">Keys: <b>PK</b> (HASH) · <b>SK</b> (RANGE)</div>
+    <div class="chip">Index: <b>GSI1</b> (GSI1PK / GSI1SK)</div>
+    <div class="chip">Items scanned: <b>4</b></div>
+    <div class="chip">ARN: arn:aws:dynamodb:ap-southeast-1:••••••••••••:table/tonewise</div>
+  </div>
+  <table>
+    <tr><th>Entity</th><th>PK (partition)</th><th>SK (sort)</th><th>attributes</th></tr>
+    
+  <tr>
+    <td class="ent">Graded turn</td>
+    <td class="k">SESSION#07002a88-00cf-46f6-b983-e1b63392fecd</td>
+    <td class="sk">TURN#0001</td>
+    <td class="x">grade={"correct":"Your sentence is very well-formed and perfectly understandable. All the words and grammar are correct.</td>
+  </tr>
+  <tr>
+    <td class="ent">User profile</td>
+    <td class="k">USER#demo-johnlee</td>
+    <td class="sk">PROFILE</td>
+    <td class="x">createdAt=2026-06-23T13:51:31.681Z · free_used=1 · updatedAt=2026-06-23T13:51:31.681Z · type=user</td>
+  </tr>
+  <tr>
+    <td class="ent">User profile</td>
+    <td class="k">USER#demo-judge-1</td>
+    <td class="sk">PROFILE</td>
+    <td class="x">createdAt=2026-06-23T14:12:23.819Z · free_used=1 · updatedAt=2026-06-23T14:12:23.819Z · type=user</td>
+  </tr>
+  <tr>
+    <td class="ent">Session</td>
+    <td class="k">USER#demo-judge-1</td>
+    <td class="sk">SESSION#07002a88-00cf-46f6-b983-e1b63392fecd</td>
+    <td class="x">sessionId=07002a88-00cf-46f6-b983-e1b63392fecd · topic=restaurant · level=HSK2 · createdAt=2026-06-23T14:12:29.096Z · op</td>
+  </tr>
+  </table>
+  <div class="foot">DescribeTable + Scan via @aws-sdk/lib-dynamodb · account id redacted · generated for the H0 submission</div>
+</body></html>

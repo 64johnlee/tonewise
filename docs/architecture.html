@@ -1,0 +1,72 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+:root{
+  --bg:#0c0a09;--panel:#1a1614;--line:#3a312c;--text:#f4ece6;--dim:#a89a90;
+  --red:#e8624a;--gold:#e8b65a;--jade:#4fcf9a;--blue:#6aa6ff;
+  --mono:"Cascadia Code","SF Mono",Consolas,monospace;--sans:"Inter","Segoe UI",system-ui,sans-serif;
+  --han:"Noto Serif SC","Microsoft YaHei",serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1600px;height:900px;background:
+  radial-gradient(900px 560px at 82% -8%,rgba(232,98,74,.12),transparent 60%),
+  radial-gradient(760px 520px at -4% 106%,rgba(232,182,90,.10),transparent 55%),var(--bg);
+  color:var(--text);font-family:var(--sans);padding:56px 64px;-webkit-font-smoothing:antialiased}
+.head{display:flex;align-items:baseline;gap:18px;margin-bottom:8px}
+.head h1{font-size:46px;font-weight:800;letter-spacing:-.02em}
+.head h1 .w{background:linear-gradient(120deg,var(--red),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.head .sub{font-size:21px;color:var(--dim)}
+.flow{display:flex;align-items:stretch;gap:0;margin-top:38px}
+.col{flex:1;display:flex;flex-direction:column;gap:18px}
+.arrow{display:flex;align-items:center;justify-content:center;width:62px;color:var(--gold);font-size:34px;font-weight:700}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px 24px}
+.box .t{font-size:22px;font-weight:700;margin-bottom:8px}
+.box .d{font-size:17px;color:var(--dim);line-height:1.45}
+.box.client{border-color:rgba(106,166,255,.45)} .box.client .t{color:var(--blue)}
+.box.vercel .t{color:var(--text)}
+.box.ai{border-color:rgba(79,207,154,.45)} .box.ai .t{color:var(--jade)}
+.box.db{border-color:rgba(232,182,90,.5)} .box.db .t{color:var(--gold)}
+.mono{font-family:var(--mono);font-size:14px;color:var(--dim);margin-top:8px}
+.routes{display:flex;gap:10px;margin-top:6px;flex-wrap:wrap}
+.chip{font-family:var(--mono);font-size:13px;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:8px;padding:5px 9px;color:#d8cdc4}
+.dbtable{margin-top:14px;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.dbtable .row{display:flex;font-family:var(--mono);font-size:13px;border-top:1px solid var(--line)}
+.dbtable .row:first-child{border-top:none;background:rgba(232,182,90,.12);color:var(--gold)}
+.dbtable .row div{padding:7px 11px;flex:1;border-right:1px solid var(--line)}
+.dbtable .row div:last-child{border-right:none}
+.keyless{margin-top:26px;display:flex;gap:14px;align-items:center;background:rgba(79,207,154,.08);border:1px solid rgba(79,207,154,.35);border-radius:12px;padding:16px 22px}
+.keyless .b{color:var(--jade);font-weight:700;font-size:18px}
+.keyless .x{font-size:16px;color:#cfe8dc;line-height:1.4}
+.foot{position:absolute;left:64px;bottom:30px;font-size:15px;color:var(--dim)}
+.foot b{color:var(--gold)}
+</style></head><body>
+  <div class="head"><h1>Tone<span class="w">Wise</span></h1><span class="sub">— architecture · the zero stack (Vercel + AWS DynamoDB)</span></div>
+
+  <div class="flow">
+    <div class="col">
+      <div class="box client"><div class="t">Browser</div><div class="d">Next.js 16 App Router UI — scenario + HSK picker, live graded chat, review queue.</div><div class="mono">React · v0-scaffolded</div></div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="col">
+      <div class="box vercel"><div class="t">Vercel — Next.js route handlers</div><div class="d">Serverless API orchestrating grading + persistence.</div>
+        <div class="routes"><span class="chip">POST /api/session</span><span class="chip">POST /api/chat</span><span class="chip">POST /api/summary</span></div>
+      </div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="col">
+      <div class="box ai"><div class="t">Google Vertex AI</div><div class="d">Gemini 2.5 Flash — opening line, per-turn tone &amp; grammar grade, session summary (structured JSON).</div><div class="mono">keyless: SA-JWT → short-lived OAuth</div></div>
+      <div class="box db"><div class="t">Amazon DynamoDB — single table <span class="han">tonewise</span></div>
+        <div class="dbtable">
+          <div class="row"><div>Entity</div><div>PK</div><div>SK</div></div>
+          <div class="row"><div>Profile</div><div>USER#&lt;uid&gt;</div><div>PROFILE</div></div>
+          <div class="row"><div>Session</div><div>USER#&lt;uid&gt;</div><div>SESSION#&lt;id&gt;</div></div>
+          <div class="row"><div>Turn</div><div>SESSION#&lt;id&gt;</div><div>TURN#&lt;n&gt;</div></div>
+          <div class="row"><div>Review</div><div>USER#&lt;uid&gt;</div><div>REVIEW#&lt;word&gt;</div></div>
+        </div>
+        <div class="mono">GSI1 (REVIEW#&lt;uid&gt; / dueDate) → spaced-repetition "due now" queue · PAY_PER_REQUEST</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="keyless"><span class="b">Keyless to the model</span><span class="x">No static API key in the request path — a service-account JWT is signed locally with Node crypto and exchanged for a short-lived Google OAuth token, billed to GCP credit.</span></div>
+
+  <div class="foot"><b>Track 1 — Monetizable B2C</b> · free for 3 sessions, then $5/mo · live at tonewise-topaz.vercel.app</div>
+</body></html>

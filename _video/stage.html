@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<style>
+:root{
+  --bg:#0c0a09; --panel:#1a1614; --line:#332b27; --text:#f4ece6; --dim:#a89a90;
+  --red:#e8624a; --gold:#e8b65a; --jade:#4fcf9a; --blue:#6aa6ff; --gray:#8a7d74;
+  --mono:"Cascadia Code","SF Mono",Consolas,monospace;
+  --sans:"Inter","Segoe UI",system-ui,sans-serif;
+  --han:"Noto Serif SC","Microsoft YaHei",serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:
+  radial-gradient(1100px 680px at 80% -10%, rgba(232,98,74,.12), transparent 60%),
+  radial-gradient(900px 600px at -5% 108%, rgba(232,182,90,.10), transparent 55%),
+  var(--bg); color:var(--text); font-family:var(--sans);-webkit-font-smoothing:antialiased}
+.scene{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
+  padding:96px 120px;opacity:0;transform:translateY(14px);pointer-events:none;
+  transition:opacity .5s ease, transform .5s ease}
+.scene.active{opacity:1;transform:none}
+.kicker{font-size:22px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:26px}
+h1{font-size:124px;line-height:.98;font-weight:800;letter-spacing:-.02em}
+h1 .w{background:linear-gradient(120deg,var(--red),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tag{font-size:30px;color:var(--dim);margin-top:28px;font-weight:500}
+.han{font-family:var(--han)}
+.problem{font-size:40px;line-height:1.5;max-width:1420px;font-weight:500;color:#e6dcd4}
+.problem b{color:#fff}
+.hl-red{color:var(--red)} .hl-gold{color:var(--gold)} .hl-jade{color:var(--jade)}
+.scene-title{font-size:30px;color:var(--gold);letter-spacing:.05em;text-transform:uppercase;font-weight:600;margin-bottom:34px}
+.footer-tag{position:absolute;left:120px;bottom:78px;font-size:24px;color:var(--dim)}
+.footer-tag b{color:var(--gold)}
+.scene.active .line{opacity:0;animation:rise .5s ease forwards}
+.line{margin:7px 0}
+.scene.active .line:nth-child(1){animation-delay:.15s}.scene.active .line:nth-child(2){animation-delay:.55s}
+.scene.active .line:nth-child(3){animation-delay:1.0s}.scene.active .line:nth-child(4){animation-delay:1.5s}
+.scene.active .line:nth-child(5){animation-delay:2.0s}.scene.active .line:nth-child(6){animation-delay:2.5s}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+/* feature rows */
+.feat{display:flex;flex-direction:column;gap:20px;font-size:30px;max-width:1500px}
+.feat .row{display:flex;gap:20px;align-items:flex-start}
+.feat .b{color:var(--gold);font-weight:700;min-width:42px}
+/* chat */
+.chat{display:flex;flex-direction:column;gap:20px;width:1480px}
+.bubble{padding:22px 30px;border-radius:18px;font-size:28px;line-height:1.5;max-width:1100px}
+.lin{background:var(--panel);border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:6px}
+.me{background:rgba(106,166,255,.14);border:1px solid rgba(106,166,255,.35);align-self:flex-end;border-bottom-right-radius:6px}
+.who{font-size:19px;color:var(--dim);margin-bottom:8px;font-family:var(--mono)}
+.py{font-size:20px;color:var(--dim);margin-top:8px;font-family:var(--mono)}
+.grade{align-self:flex-end;display:flex;gap:16px;align-items:center;background:rgba(79,207,154,.12);border:1px solid rgba(79,207,154,.4);border-radius:14px;padding:16px 26px;font-size:24px}
+.grade .score{font-family:var(--mono);font-size:40px;font-weight:800;color:var(--jade)}
+/* data model table */
+table.dm{width:1520px;border-collapse:collapse;font-size:24px}
+table.dm td,table.dm th{border:1px solid var(--line);padding:16px 22px;text-align:left}
+table.dm th{background:rgba(232,182,90,.1);color:var(--gold);font-size:22px;letter-spacing:.04em}
+.k{font-family:var(--mono);color:var(--blue)} .sk{font-family:var(--mono);color:var(--gold)}
+/* tech */
+.cards{display:flex;gap:36px}
+.card{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:34px 38px}
+.card h3{font-size:24px;color:var(--gold);margin-bottom:18px}
+.card p{font-size:24px;color:#d8cdc4;line-height:1.5}
+.card .mono{font-family:var(--mono);font-size:20px;color:var(--dim);margin-top:14px}
+</style></head>
+<body>
+
+<section class="scene" id="s0">
+  <div class="kicker">H0 · Hack the Zero Stack · Track 1 — Monetizable B2C</div>
+  <h1>Tone<span class="w">Wise</span></h1>
+  <p class="problem" style="margin-top:56px">Say the right syllable with the wrong tone and <b class="han hl-jade">水饺</b> <span class="hl-jade">(shuǐjiǎo, "dumplings")</span> becomes <b class="han hl-red">睡觉</b> <span class="hl-red">(shuìjiào, "sleep")</span>. Almost every app drills flashcards and <b>never corrects your tones in a real conversation.</b> ToneWise fixes exactly that.</p>
+</section>
+
+<section class="scene" id="s1">
+  <div class="scene-title">What it does</div>
+  <div class="feat">
+    <div class="row line"><span class="b">1</span><div>Pick a real scenario (ordering food, travel, a work meeting) and your <b>HSK level</b>.</div></div>
+    <div class="row line"><span class="b">2</span><div>Have an actual back-and-forth with <b>Lin Wei</b>, an AI native speaker.</div></div>
+    <div class="row line"><span class="b">3</span><div>After every reply: a <b class="hl-jade">tone &amp; grammar score</b>, the specific <b class="hl-red">tone errors</b> it heard, pinyin + a more natural phrasing.</div></div>
+    <div class="row line"><span class="b">4</span><div>A <b class="hl-gold">spaced-repetition queue</b> built from <i>your</i> actual mistakes — so you drill what you personally get wrong.</div></div>
+  </div>
+</section>
+
+<section class="scene" id="s2">
+  <div class="scene-title">Live — a graded conversation (Restaurant · HSK 2)</div>
+  <div class="chat">
+    <div class="bubble lin line"><div class="who">Lin Wei</div><span class="han">服务员，你好！我想点餐。</span><div class="py">fú​wù​yuán, nǐ hǎo! wǒ xiǎng diǎn cān.</div></div>
+    <div class="bubble me line"><div class="who">You</div><span class="han">你好，我想要两个水饺和一杯茶。</span><div class="py">nǐ hǎo, wǒ xiǎng yào liǎng gè shuǐjiǎo hé yì bēi chá.</div></div>
+    <div class="grade line"><span class="score">9</span><div><b class="hl-jade">/10</b> · tones clean · grammar correct<br><span style="font-size:20px;color:var(--dim)">no tone errors detected</span></div></div>
+    <div class="bubble lin line"><div class="who">Lin Wei</div><span class="han">好的，两个水饺和一杯茶。请问还需要别的吗？</span><div class="py">hǎo de, liǎng gè shuǐjiǎo hé yì bēi chá. qǐng wèn hái xū​yào bié de ma?</div></div>
+  </div>
+</section>
+
+<section class="scene" id="s3">
+  <div class="scene-title">The AWS database — a deliberate DynamoDB single-table design</div>
+  <table class="dm">
+    <tr class="line"><th>Entity</th><th>PK</th><th>SK</th><th>Access pattern</th></tr>
+    <tr class="line"><td>User profile</td><td class="k">USER#&lt;uid&gt;</td><td class="sk">PROFILE</td><td>plan · free_used · streak</td></tr>
+    <tr class="line"><td>Session</td><td class="k">USER#&lt;uid&gt;</td><td class="sk">SESSION#&lt;ts&gt;</td><td>topic · level · score</td></tr>
+    <tr class="line"><td>Turn</td><td class="k">SESSION#&lt;id&gt;</td><td class="sk">TURN#0001</td><td>learner · Lin Wei · grade</td></tr>
+    <tr class="line"><td>Review item</td><td class="k">USER#&lt;uid&gt;</td><td class="sk">REVIEW#&lt;word&gt;</td><td>→ <b class="hl-gold">GSI1</b>: due spaced-repetition queue</td></tr>
+  </table>
+  <div class="tag line" style="margin-top:28px">One table, one query per access pattern. The <b class="hl-gold">GSI</b> powers the "what's due to review" queue from your real tone mistakes.</div>
+</section>
+
+<section class="scene" id="s4">
+  <div class="scene-title">The stack — Vercel + AWS, keyless</div>
+  <div class="cards">
+    <div class="card line"><h3>AWS DynamoDB</h3><p>Single-table design + a GSI for the review queue. Pay-per-request, scales to zero.</p><div class="mono">@aws-sdk/lib-dynamodb · Next.js route handlers</div></div>
+    <div class="card line"><h3>Google Vertex AI</h3><p>Gemini 2.5 Flash grades tones &amp; replies as Lin Wei. <b class="hl-jade">Keyless</b> — a service-account JWT signed locally, exchanged for a short-lived OAuth token. No static key in the path.</p><div class="mono">gemini-2.5-flash · responseMimeType: json</div></div>
+    <div class="card line"><h3>Vercel</h3><p>Next.js 16 (App Router) on Vercel. Front-end in minutes, data on a production-grade store.</p><div class="mono">tonewise-topaz.vercel.app</div></div>
+  </div>
+</section>
+
+<section class="scene" id="s5">
+  <div class="kicker">Practice real Mandarin · get your tones graded in real time</div>
+  <h1>Tone<span class="w">Wise</span></h1>
+  <div class="tag" style="font-size:36px;margin-top:36px">Live at <b class="hl-gold">tonewise-topaz.vercel.app</b></div>
+  <div class="footer-tag"><b>Vercel + AWS DynamoDB</b> · Google Vertex AI (Gemini 2.5 Flash) · Next.js 16</div>
+</section>
+
+<script>
+  const scenes=[...document.querySelectorAll('.scene')];
+  window.showScene=(i)=>scenes.forEach((s,idx)=>s.classList.toggle('active', idx===i));
+  window.showScene(0);
+</script>
+</body></html>

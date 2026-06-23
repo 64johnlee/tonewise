@@ -5,3 +5,5 @@ node_modules/
 .DS_Store
 *.log
 .vercel
+.ruff_cache/
+_video/out/
