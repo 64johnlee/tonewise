@@ -7,3 +7,4 @@ node_modules/
 .vercel
 .ruff_cache/
 _video/out/
+coverage/
