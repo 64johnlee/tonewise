@@ -3,7 +3,7 @@ import { useState, useRef, useEffect, useSyncExternalStore } from "react";
 import { TOPICS } from "../lib/constants";
 import { createRecorder, isVoiceSupported } from "../lib/voice.js";
 import { analyzeUtterance } from "../lib/tone-analysis.js";
-import { speak, cancelSpeech, primeVoices } from "../lib/speech.js";
+import { speak, cancelSpeech, primeVoices, unlockSpeech } from "../lib/speech.js";
 
 const LEVELS = ["HSK1", "HSK2", "HSK3", "HSK4", "HSK5", "HSK6"];
 
@@ -84,6 +84,7 @@ export default function Home() {
   useEffect(() => { primeVoices(); return () => cancelSpeech(); }, []);
 
   async function start() {
+    unlockSpeech();
     setLoading(true);
     try {
       const r = await fetch("/api/session", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ topic, level, uid: getUid() }) });
@@ -114,12 +115,14 @@ export default function Home() {
   async function send() {
     const msg = input.trim();
     if (!msg || loading || !session) return;
+    unlockSpeech();
     setInput("");
     await postTurn(msg, null, { who: "me", zh: msg });
   }
 
   async function startRec() {
     if (recording || loading || !session) return;
+    unlockSpeech();
     cancelSpeech(); // don't let Lin Wei's voice bleed into the mic
     const rec = createRecorder();
     rec.onUpdate = ({ contour, transcript }) => {
@@ -137,6 +140,7 @@ export default function Home() {
   async function stopRec() {
     const rec = recRef.current;
     if (!rec) return;
+    unlockSpeech();
     setRecording(false);
     const { transcript, contour } = await rec.stop();
     recRef.current = null;
