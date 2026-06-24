@@ -19,34 +19,52 @@ HERE = Path(__file__).resolve().parent
 OUT = HERE / "out"
 OUT.mkdir(exist_ok=True)
 FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
-VOICE = "en-US-AndrewNeural"
-PAD = 1.1  # seconds of silence after each narration segment
+VOICE_EN = "en-US-AndrewNeural"
+VOICE_ZH = "zh-CN-XiaoxiaoNeural"  # Mandarin voice for the Chinese lines
+PAD = 1.1  # seconds of silence after each scene
+GAP = 0.34  # silence between narration parts within a scene
 
-# (scene_index, narration)
+# (scene_index, parts) — each part is (lang, text); "zh" parts are spoken in Mandarin.
 SCENES = [
-    (0, "In Mandarin, the tone is the word. Say the right syllable with the wrong tone, "
-        "and shui jiao, dumplings, becomes shui jiao, sleep. Almost every app drills flashcards "
-        "but never actually hears your tones — and never lets you hear a native speaker say it "
-        "back. ToneWise does both."),
-    (1, "You pick a real scenario and your H.S.K. level. Then you speak your reply. ToneWise "
-        "measures the actual pitch of your voice, scores every syllable's tone — green for "
-        "right, red for wrong — and shows you your pitch curve. Then Lin Wei says it back in a "
-        "natural native voice, so you can hear the target and try again. The tones you miss are "
-        "queued for spaced repetition."),
-    (2, "Here it is. I order two dumplings. ToneWise pulls the pitch out of my voice right in "
-        "the browser, lines each syllable up against the correct tone, and grades it — nine out "
-        "of ten, with the one tone it heard wrong flagged in red. Then Lin Wei replies, out "
-        "loud."),
-    (3, "Underneath, a deliberate DynamoDB single-table design — the user profile, every "
-        "session, every graded turn, and the review items, each as its own item with a "
-        "partition key and sort key. A global secondary index powers the what's-due review "
-        "queue. One table, one query per access pattern."),
-    (4, "The stack is keyless where it counts. Pitch detection runs in the browser with Web "
-        "Audio. Gemini on Google Vertex A.I. plays Lin Wei, and Google Cloud Text-to-Speech "
-        "gives her a Wavenet Mandarin voice — both authenticated with a locally signed "
-        "service-account token, no static key. Data on DynamoDB, all on Vercel."),
-    (5, "ToneWise — speak Mandarin, get your tones graded, and hear it done right. Live at "
-        "tonewise dash topaz dot vercel dot app. Thanks for watching."),
+    (0, [
+        ("en", "In Mandarin, the tone is the word. Say the right syllable with the wrong tone, and"),
+        ("zh", "水饺，"),
+        ("en", "dumplings, becomes"),
+        ("zh", "睡觉，"),
+        ("en", "sleep. Almost every app drills flashcards but never actually hears your tones — and "
+               "never lets you hear a native speaker say it back. ToneWise does both."),
+    ]),
+    (1, [
+        ("en", "You pick a real scenario and your H.S.K. level. Then you speak your reply. ToneWise "
+               "measures the actual pitch of your voice, scores every syllable's tone — green for "
+               "right, red for wrong — and shows you your pitch curve. Then Lin Wei says it back in a "
+               "natural native voice, so you can hear the target and try again. The tones you miss are "
+               "queued for spaced repetition."),
+    ]),
+    (2, [
+        ("en", "Here it is. I order two dumplings —"),
+        ("zh", "我想要两个水饺。"),
+        ("en", "ToneWise pulls the pitch out of my voice right in the browser, lines each syllable up "
+               "against the correct tone, and grades it — nine out of ten, with the one tone it heard "
+               "wrong flagged in red. Then Lin Wei replies, out loud —"),
+        ("zh", "好的，一共两个水饺。"),
+    ]),
+    (3, [
+        ("en", "Underneath, a deliberate DynamoDB single-table design — the user profile, every "
+               "session, every graded turn, and the review items, each as its own item with a "
+               "partition key and sort key. A global secondary index powers the what's-due review "
+               "queue. One table, one query per access pattern."),
+    ]),
+    (4, [
+        ("en", "The stack is keyless where it counts. Pitch detection runs in the browser with Web "
+               "Audio. Gemini on Google Vertex A.I. plays Lin Wei, and Google Cloud Text-to-Speech "
+               "gives her a Wavenet Mandarin voice — both authenticated with a locally signed "
+               "service-account token, no static key. Data on DynamoDB, all on Vercel."),
+    ]),
+    (5, [
+        ("en", "ToneWise — speak Mandarin, get your tones graded, and hear it done right. Live at "
+               "tonewise dash topaz dot vercel dot app. Thanks for watching."),
+    ]),
 ]
 
 
@@ -63,15 +81,45 @@ def mp3_duration(path: Path) -> float:
     return int(h) * 3600 + int(mm) * 60 + float(ss)
 
 
+def make_silence(path: Path, dur: float) -> None:
+    run([FFMPEG, "-y", "-f", "lavfi", "-i", "anullsrc=r=24000:cl=mono",
+         "-t", f"{dur:.3f}", "-q:a", "9", str(path)])
+
+
 async def gen_narration() -> list[float]:
-    """Generate per-scene mp3, return scene durations (narration + PAD)."""
+    """Synthesize each scene (English narration + spoken Mandarin parts), concat into
+    one per-scene mp3, and return scene durations (narration + PAD)."""
     durs = []
-    for idx, text in SCENES:
-        mp3 = OUT / f"n{idx}.mp3"
-        await edge_tts.Communicate(text, VOICE, rate="+3%").save(str(mp3))
-        d = mp3_duration(mp3)
+    sil = OUT / "_sil.mp3"
+    make_silence(sil, GAP)
+    for idx, parts in SCENES:
+        part_files = []
+        for j, (lang, text) in enumerate(parts):
+            voice = VOICE_ZH if lang == "zh" else VOICE_EN
+            rate = "+0%" if lang == "zh" else "+3%"
+            mp3 = OUT / f"n{idx}_{j}.mp3"
+            await edge_tts.Communicate(text, voice, rate=rate).save(str(mp3))
+            part_files.append(mp3)
+
+        scene_mp3 = OUT / f"n{idx}.mp3"
+        if len(part_files) == 1:
+            run([FFMPEG, "-y", "-i", str(part_files[0]), "-c", "copy", str(scene_mp3)])
+        else:
+            seq = []
+            for k, f in enumerate(part_files):
+                if k:
+                    seq.append(sil)
+                seq.append(f)
+            inputs = []
+            for f in seq:
+                inputs += ["-i", str(f)]
+            streams = "".join(f"[{i}:a]" for i in range(len(seq)))
+            run([FFMPEG, "-y", *inputs, "-filter_complex",
+                 f"{streams}concat=n={len(seq)}:v=0:a=1[a]", "-map", "[a]", str(scene_mp3)])
+
+        d = mp3_duration(scene_mp3)
         durs.append(round(d + PAD, 3))
-        print(f"  scene {idx}: narration {d:.1f}s -> scene {durs[-1]:.1f}s")
+        print(f"  scene {idx}: {d:.1f}s -> scene {durs[-1]:.1f}s ({len(parts)} part(s))")
     return durs
 
 
