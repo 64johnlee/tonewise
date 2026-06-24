@@ -3,7 +3,7 @@
 <style>
 :root{
   --bg:#0c0a09; --panel:#1a1614; --line:#332b27; --text:#f4ece6; --dim:#a89a90;
-  --red:#e8624a; --gold:#e8b65a; --jade:#4fcf9a; --blue:#6aa6ff; --gray:#8a7d74;
+  --red:#e8624a; --gold:#e8b65a; --jade:#4fcf9a; --blue:#6aa6ff;
   --mono:"Cascadia Code","SF Mono",Consolas,monospace;
   --sans:"Inter","Segoe UI",system-ui,sans-serif;
   --han:"Noto Serif SC","Microsoft YaHei",serif;
@@ -22,7 +22,7 @@ h1{font-size:124px;line-height:.98;font-weight:800;letter-spacing:-.02em}
 h1 .w{background:linear-gradient(120deg,var(--red),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
 .tag{font-size:30px;color:var(--dim);margin-top:28px;font-weight:500}
 .han{font-family:var(--han)}
-.problem{font-size:40px;line-height:1.5;max-width:1420px;font-weight:500;color:#e6dcd4}
+.problem{font-size:40px;line-height:1.5;max-width:1480px;font-weight:500;color:#e6dcd4}
 .problem b{color:#fff}
 .hl-red{color:var(--red)} .hl-gold{color:var(--gold)} .hl-jade{color:var(--jade)}
 .scene-title{font-size:30px;color:var(--gold);letter-spacing:.05em;text-transform:uppercase;font-weight:600;margin-bottom:34px}
@@ -34,56 +34,84 @@ h1 .w{background:linear-gradient(120deg,var(--red),var(--gold));-webkit-backgrou
 .scene.active .line:nth-child(3){animation-delay:1.0s}.scene.active .line:nth-child(4){animation-delay:1.5s}
 .scene.active .line:nth-child(5){animation-delay:2.0s}.scene.active .line:nth-child(6){animation-delay:2.5s}
 @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-/* feature rows */
-.feat{display:flex;flex-direction:column;gap:20px;font-size:30px;max-width:1500px}
+.feat{display:flex;flex-direction:column;gap:22px;font-size:30px;max-width:1560px}
 .feat .row{display:flex;gap:20px;align-items:flex-start}
 .feat .b{color:var(--gold);font-weight:700;min-width:42px}
-/* chat */
-.chat{display:flex;flex-direction:column;gap:20px;width:1480px}
-.bubble{padding:22px 30px;border-radius:18px;font-size:28px;line-height:1.5;max-width:1100px}
-.lin{background:var(--panel);border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:6px}
-.me{background:rgba(106,166,255,.14);border:1px solid rgba(106,166,255,.35);align-self:flex-end;border-bottom-right-radius:6px}
-.who{font-size:19px;color:var(--dim);margin-bottom:8px;font-family:var(--mono)}
-.py{font-size:20px;color:var(--dim);margin-top:8px;font-family:var(--mono)}
-.grade{align-self:flex-end;display:flex;gap:16px;align-items:center;background:rgba(79,207,154,.12);border:1px solid rgba(79,207,154,.4);border-radius:14px;padding:16px 26px;font-size:24px}
-.grade .score{font-family:var(--mono);font-size:40px;font-weight:800;color:var(--jade)}
+/* voice scene */
+.vstage{display:flex;flex-direction:column;gap:26px;width:1640px}
+.said{font-size:26px;color:var(--dim)}
+.said b{color:#fff;font-family:var(--han);font-size:34px}
+.pitchwrap{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:26px 30px}
+.pitchwrap .cap{font-size:20px;color:var(--dim);font-family:var(--mono);margin-bottom:8px}
+.tonerow{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px}
+.tchip{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 20px;border-radius:14px;background:rgba(255,255,255,.06);min-width:96px}
+.tchip .c{font-family:var(--han);font-size:40px;line-height:1}
+.tchip .p{font-family:var(--mono);font-size:17px;color:var(--dim)}
+.tchip.ok{background:rgba(79,207,154,.18);box-shadow:inset 0 0 0 1.5px rgba(79,207,154,.55)}
+.tchip.bad{background:rgba(232,98,74,.2);box-shadow:inset 0 0 0 1.5px rgba(232,98,74,.7)}
+.tchip .m{font-family:var(--mono);font-size:15px}
+.tchip.ok .m{color:var(--jade)} .tchip.bad .m{color:var(--red)}
+.vbottom{display:flex;align-items:center;gap:34px}
+.scorebig{display:flex;align-items:baseline;gap:10px;background:rgba(79,207,154,.12);border:1px solid rgba(79,207,154,.4);border-radius:14px;padding:16px 28px}
+.scorebig .n{font-family:var(--mono);font-size:46px;font-weight:800;color:var(--jade)}
+.scorebig .l{font-size:22px;color:#cfe8dc}
+.speakrow{display:flex;align-items:center;gap:14px;font-size:26px;color:var(--gold)}
+.speakrow .ico{font-size:36px}
+.speakrow .han{color:#fff}
 /* data model table */
 table.dm{width:1520px;border-collapse:collapse;font-size:24px}
 table.dm td,table.dm th{border:1px solid var(--line);padding:16px 22px;text-align:left}
 table.dm th{background:rgba(232,182,90,.1);color:var(--gold);font-size:22px;letter-spacing:.04em}
 .k{font-family:var(--mono);color:var(--blue)} .sk{font-family:var(--mono);color:var(--gold)}
 /* tech */
-.cards{display:flex;gap:36px}
-.card{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:34px 38px}
-.card h3{font-size:24px;color:var(--gold);margin-bottom:18px}
-.card p{font-size:24px;color:#d8cdc4;line-height:1.5}
-.card .mono{font-family:var(--mono);font-size:20px;color:var(--dim);margin-top:14px}
+.cards{display:flex;gap:30px;flex-wrap:wrap}
+.card{flex:1;min-width:360px;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:30px 34px}
+.card h3{font-size:23px;color:var(--gold);margin-bottom:14px}
+.card p{font-size:22px;color:#d8cdc4;line-height:1.45}
+.card .mono{font-family:var(--mono);font-size:18px;color:var(--dim);margin-top:12px}
 </style></head>
 <body>
 
 <section class="scene" id="s0">
   <div class="kicker">H0 · Hack the Zero Stack · Track 1 — Monetizable B2C</div>
   <h1>Tone<span class="w">Wise</span></h1>
-  <p class="problem" style="margin-top:56px">Say the right syllable with the wrong tone and <b class="han hl-jade">水饺</b> <span class="hl-jade">(shuǐjiǎo, "dumplings")</span> becomes <b class="han hl-red">睡觉</b> <span class="hl-red">(shuìjiào, "sleep")</span>. Almost every app drills flashcards and <b>never corrects your tones in a real conversation.</b> ToneWise fixes exactly that.</p>
+  <p class="problem" style="margin-top:56px">In Mandarin the tone <i>is</i> the word: <b class="han hl-jade">水饺</b> <span class="hl-jade">(shuǐjiǎo, "dumplings")</span> vs <b class="han hl-red">睡觉</b> <span class="hl-red">(shuìjiào, "sleep")</span>. Almost every app drills flashcards but <b>never actually hears your tones</b> — and never lets you <b>hear a native speaker say it back</b>. ToneWise does both.</p>
 </section>
 
 <section class="scene" id="s1">
   <div class="scene-title">What it does</div>
   <div class="feat">
-    <div class="row line"><span class="b">1</span><div>Pick a real scenario (ordering food, travel, a work meeting) and your <b>HSK level</b>.</div></div>
-    <div class="row line"><span class="b">2</span><div>Have an actual back-and-forth with <b>Lin Wei</b>, an AI native speaker.</div></div>
-    <div class="row line"><span class="b">3</span><div>After every reply: a <b class="hl-jade">tone &amp; grammar score</b>, the specific <b class="hl-red">tone errors</b> it heard, pinyin + a more natural phrasing.</div></div>
-    <div class="row line"><span class="b">4</span><div>A <b class="hl-gold">spaced-repetition queue</b> built from <i>your</i> actual mistakes — so you drill what you personally get wrong.</div></div>
+    <div class="row line"><span class="b">1</span><div>Pick a real scenario (ordering food, travel, a meeting) and your <b>HSK level</b>.</div></div>
+    <div class="row line"><span class="b">2</span><div><b class="hl-gold">Speak</b> your reply — ToneWise measures the <b>actual pitch</b> of your voice.</div></div>
+    <div class="row line"><span class="b">3</span><div>Every syllable's tone is scored — <b class="hl-jade">green = right</b>, <b class="hl-red">red = wrong</b> — next to your pitch curve.</div></div>
+    <div class="row line"><span class="b">4</span><div>Then <b>Lin Wei says it back</b> in a natural native voice, and your misses go to a <b class="hl-gold">spaced-repetition</b> queue.</div></div>
   </div>
 </section>
 
 <section class="scene" id="s2">
-  <div class="scene-title">Live — a graded conversation (Restaurant · HSK 2)</div>
-  <div class="chat">
-    <div class="bubble lin line"><div class="who">Lin Wei</div><span class="han">服务员，你好！我想点餐。</span><div class="py">fú​wù​yuán, nǐ hǎo! wǒ xiǎng diǎn cān.</div></div>
-    <div class="bubble me line"><div class="who">You</div><span class="han">你好，我想要两个水饺和一杯茶。</span><div class="py">nǐ hǎo, wǒ xiǎng yào liǎng gè shuǐjiǎo hé yì bēi chá.</div></div>
-    <div class="grade line"><span class="score">9</span><div><b class="hl-jade">/10</b> · tones clean · grammar correct<br><span style="font-size:20px;color:var(--dim)">no tone errors detected</span></div></div>
-    <div class="bubble lin line"><div class="who">Lin Wei</div><span class="han">好的，两个水饺和一杯茶。请问还需要别的吗？</span><div class="py">hǎo de, liǎng gè shuǐjiǎo hé yì bēi chá. qǐng wèn hái xū​yào bié de ma?</div></div>
+  <div class="scene-title">Live — speak, and get every tone graded</div>
+  <div class="vstage">
+    <div class="said line">You said: <b class="han">我想要两个水饺</b> <span style="font-family:var(--mono);font-size:20px">(wǒ xiǎng yào liǎng gè shuǐ jiǎo)</span></div>
+    <div class="pitchwrap line">
+      <div class="cap">your pitch (F0) — extracted in the browser with Web Audio</div>
+      <svg width="1580" height="120" viewBox="0 0 1580 120" preserveAspectRatio="none">
+        <path d="M20,80 C120,40 200,38 250,52 C320,72 360,30 440,26 C520,22 560,86 650,92 C740,98 760,40 850,40 C960,40 980,44 1080,70 C1170,92 1210,56 1300,40 C1380,26 1460,96 1560,104"
+              fill="none" stroke="#4fcf9a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="tonerow line">
+      <div class="tchip ok"><span class="c han">我</span><span class="p">wǒ</span><span class="m">3 ✓</span></div>
+      <div class="tchip ok"><span class="c han">想</span><span class="p">xiǎng</span><span class="m">3 ✓</span></div>
+      <div class="tchip ok"><span class="c han">要</span><span class="p">yào</span><span class="m">4 ✓</span></div>
+      <div class="tchip ok"><span class="c han">两</span><span class="p">liǎng</span><span class="m">3 ✓</span></div>
+      <div class="tchip ok"><span class="c han">个</span><span class="p">gè</span><span class="m">4 ✓</span></div>
+      <div class="tchip ok"><span class="c han">水</span><span class="p">shuǐ</span><span class="m">3 ✓</span></div>
+      <div class="tchip bad"><span class="c han">饺</span><span class="p">jiǎo</span><span class="m">4→3 ✗</span></div>
+    </div>
+    <div class="vbottom line">
+      <div class="scorebig"><span class="n">9</span><span class="l">/10 tone match</span></div>
+      <div class="speakrow"><span class="ico">🔊</span> Lin Wei replies — out loud: <span class="han">好的，一共两个水饺。</span></div>
+    </div>
   </div>
 </section>
 
@@ -93,26 +121,27 @@ table.dm th{background:rgba(232,182,90,.1);color:var(--gold);font-size:22px;lett
     <tr class="line"><th>Entity</th><th>PK</th><th>SK</th><th>Access pattern</th></tr>
     <tr class="line"><td>User profile</td><td class="k">USER#&lt;uid&gt;</td><td class="sk">PROFILE</td><td>plan · free_used · streak</td></tr>
     <tr class="line"><td>Session</td><td class="k">USER#&lt;uid&gt;</td><td class="sk">SESSION#&lt;ts&gt;</td><td>topic · level · score</td></tr>
-    <tr class="line"><td>Turn</td><td class="k">SESSION#&lt;id&gt;</td><td class="sk">TURN#0001</td><td>learner · Lin Wei · grade</td></tr>
+    <tr class="line"><td>Graded turn</td><td class="k">SESSION#&lt;id&gt;</td><td class="sk">TURN#0001</td><td>transcript · per-tone grade</td></tr>
     <tr class="line"><td>Review item</td><td class="k">USER#&lt;uid&gt;</td><td class="sk">REVIEW#&lt;word&gt;</td><td>→ <b class="hl-gold">GSI1</b>: due spaced-repetition queue</td></tr>
   </table>
-  <div class="tag line" style="margin-top:28px">One table, one query per access pattern. The <b class="hl-gold">GSI</b> powers the "what's due to review" queue from your real tone mistakes.</div>
+  <div class="tag line" style="margin-top:28px">One table, one query per access pattern. The <b class="hl-gold">GSI</b> powers the "what's due" queue from your real tone mistakes.</div>
 </section>
 
 <section class="scene" id="s4">
-  <div class="scene-title">The stack — Vercel + AWS, keyless</div>
+  <div class="scene-title">The stack — Vercel + AWS, keyless where it counts</div>
   <div class="cards">
-    <div class="card line"><h3>AWS DynamoDB</h3><p>Single-table design + a GSI for the review queue. Pay-per-request, scales to zero.</p><div class="mono">@aws-sdk/lib-dynamodb · Next.js route handlers</div></div>
-    <div class="card line"><h3>Google Vertex AI</h3><p>Gemini 2.5 Flash grades tones &amp; replies as Lin Wei. <b class="hl-jade">Keyless</b> — a service-account JWT signed locally, exchanged for a short-lived OAuth token. No static key in the path.</p><div class="mono">gemini-2.5-flash · responseMimeType: json</div></div>
-    <div class="card line"><h3>Vercel</h3><p>Next.js 16 (App Router) on Vercel. Front-end in minutes, data on a production-grade store.</p><div class="mono">tonewise-topaz.vercel.app</div></div>
+    <div class="card line"><h3>In the browser</h3><p>Web Audio autocorrelation pulls your pitch (F0) live; tones are classified and scored client-side.</p><div class="mono">no audio leaves the device for scoring</div></div>
+    <div class="card line"><h3>Google Vertex AI</h3><p>Gemini 2.5 Flash plays Lin Wei and reads the conversation.</p><div class="mono">keyless: SA-JWT → short-lived OAuth</div></div>
+    <div class="card line"><h3>Google Cloud TTS</h3><p>Lin Wei's voice — <b class="hl-gold">Wavenet</b> Mandarin — so you hear the target pronunciation.</p><div class="mono">cmn-CN-Wavenet · same keyless token</div></div>
+    <div class="card line"><h3>AWS DynamoDB + Vercel</h3><p>Single-table design + GSI, pay-per-request. Next.js 16 on Vercel.</p><div class="mono">@aws-sdk/lib-dynamodb</div></div>
   </div>
 </section>
 
 <section class="scene" id="s5">
-  <div class="kicker">Practice real Mandarin · get your tones graded in real time</div>
+  <div class="kicker">Speak Mandarin · get your tones graded · hear it done right</div>
   <h1>Tone<span class="w">Wise</span></h1>
   <div class="tag" style="font-size:36px;margin-top:36px">Live at <b class="hl-gold">tonewise-topaz.vercel.app</b></div>
-  <div class="footer-tag"><b>Vercel + AWS DynamoDB</b> · Google Vertex AI (Gemini 2.5 Flash) · Next.js 16</div>
+  <div class="footer-tag"><b>Vercel + AWS DynamoDB</b> · Vertex AI (Gemini) · Google Cloud TTS · Web Audio · Next.js 16</div>
 </section>
 
 <script>

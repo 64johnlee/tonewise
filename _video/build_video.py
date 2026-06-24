@@ -25,26 +25,27 @@ PAD = 1.1  # seconds of silence after each narration segment
 # (scene_index, narration)
 SCENES = [
     (0, "In Mandarin, the tone is the word. Say the right syllable with the wrong tone, "
-        "and shui jiao, dumplings, becomes shui jiao, sleep. Almost every learning app drills "
-        "flashcards and never once corrects your tones in a real conversation. ToneWise fixes "
-        "exactly that."),
-    (1, "You pick a real scenario — ordering food, travelling, a work meeting — and your "
-        "H.S.K. level. Then you have an actual back-and-forth with Lin Wei, an A.I. native "
-        "speaker. After every reply you get a tone and grammar score, the specific tone errors "
-        "it heard, pinyin, and a more natural phrasing. The words you keep getting wrong are "
-        "queued for spaced repetition — so you drill your mistakes, not everyone's."),
-    (2, "Here it is live. Restaurant scenario, H.S.K. two. Lin Wei opens, I order two "
-        "dumplings and a tea, and the reply comes back graded — nine out of ten, tones clean, "
-        "grammar correct. The conversation just keeps going, in character, in Mandarin."),
-    (3, "Underneath, this is a deliberate DynamoDB single-table design. One table holds the "
-        "user profile, every session, every turn, and every review item — each as its own item "
-        "with a partition key and sort key. A global secondary index powers the what's-due "
-        "review queue. One table, one query per access pattern."),
-    (4, "The stack is keyless where it counts. Gemini two point five Flash, on Google Vertex "
-        "A.I., grades the tones and plays Lin Wei — authenticated with a service-account token "
-        "signed locally, no static key in the request path. Data lives in DynamoDB, the whole "
-        "thing is Next dot j.s. on Vercel. Front end in minutes, data on a production store."),
-    (5, "ToneWise — practice real Mandarin and get your tones graded in real time. Live at "
+        "and shui jiao, dumplings, becomes shui jiao, sleep. Almost every app drills flashcards "
+        "but never actually hears your tones — and never lets you hear a native speaker say it "
+        "back. ToneWise does both."),
+    (1, "You pick a real scenario and your H.S.K. level. Then you speak your reply. ToneWise "
+        "measures the actual pitch of your voice, scores every syllable's tone — green for "
+        "right, red for wrong — and shows you your pitch curve. Then Lin Wei says it back in a "
+        "natural native voice, so you can hear the target and try again. The tones you miss are "
+        "queued for spaced repetition."),
+    (2, "Here it is. I order two dumplings. ToneWise pulls the pitch out of my voice right in "
+        "the browser, lines each syllable up against the correct tone, and grades it — nine out "
+        "of ten, with the one tone it heard wrong flagged in red. Then Lin Wei replies, out "
+        "loud."),
+    (3, "Underneath, a deliberate DynamoDB single-table design — the user profile, every "
+        "session, every graded turn, and the review items, each as its own item with a "
+        "partition key and sort key. A global secondary index powers the what's-due review "
+        "queue. One table, one query per access pattern."),
+    (4, "The stack is keyless where it counts. Pitch detection runs in the browser with Web "
+        "Audio. Gemini on Google Vertex A.I. plays Lin Wei, and Google Cloud Text-to-Speech "
+        "gives her a Wavenet Mandarin voice — both authenticated with a locally signed "
+        "service-account token, no static key. Data on DynamoDB, all on Vercel."),
+    (5, "ToneWise — speak Mandarin, get your tones graded, and hear it done right. Live at "
         "tonewise dash topaz dot vercel dot app. Thanks for watching."),
 ]
 
